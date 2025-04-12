@@ -6,8 +6,8 @@ class Config:
     # driver, with the username 'root', an empty password, connecting to the localhost on port 3306,
     # and using the database named 'login'. This URI will be used by the application to connect to the
     # specified database.
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost:3306/tiendamotos'
-    #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://andy:871008@85.239.241.150:3306/tiendamotos'
+    #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost:3306/tiendamotos'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://andy:871008@85.239.241.150:3306/tiendamotos'
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///flaskdb.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = secrets.token_urlsafe(24)
