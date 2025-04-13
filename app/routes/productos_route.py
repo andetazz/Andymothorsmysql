@@ -71,10 +71,13 @@ def add():
     if request.method == 'POST':
         
         nombre = request.form['nombre'].upper()
+        stock = request.form['stock']
         precio = request.form['precio'] 
+        pordes = request.form['pordes']
+        descuento = request.form['descuento']
         descripcion = request.form['descripcion']
         idcategoria = request.form['idcategoria']
-        new_Producto =  Productos(nombre=nombre,precio=precio,descripcion=descripcion,idcategoria=idcategoria)
+        new_Producto =  Productos(nombre=nombre,stock=stock,precio=precio,pordes=pordes,descuento=descuento,descripcion=descripcion,idcategoria=idcategoria)
        
         # Subir imagen si está en la solicitud
         img1 = subir_imagen(request.files.get('img1'))
@@ -86,8 +89,11 @@ def add():
         img4 = subir_imagen(request.files.get('img4'))
         new_Producto.img4= img4
         db.session.add(new_Producto)
-        db.session.commit()
-        
+        try:
+            db.session.commit()
+            flash(f"✅ Registro Guardado: ")
+        except:
+            print("Error en la base de datos")
         return redirect(url_for('productos.index'))
     catdata= Categorias.query.all()
     return render_template('productos/add.html',catdata=catdata,)
@@ -98,7 +104,10 @@ def edit(id):
     if request.method == 'POST':
 
         producto.nombre = request.form['nombre'].upper()
-        producto.precio = request.form['precio'] 
+        producto.stock = request.form['stock']
+        producto.precio = request.form['precio']
+        producto.pordes = request.form['pordes']
+        producto.descuento = request.form['descuento'] 
         producto.descripcion = request.form['descripcion']
         producto.idcategoria = request.form['idcategoria']
 
@@ -133,6 +142,9 @@ def delete(id):
                 os.remove(ruta_img)
 
     db.session.delete(producto)
-    db.session.commit()
-    flash("✅ Producto eliminado con éxito", "success")
+    try:
+        db.session.commit()
+        flash("✅ Producto eliminado con éxito", "success")
+    except:
+        print("Error en la base de datos")
     return redirect(url_for('productos.index'))

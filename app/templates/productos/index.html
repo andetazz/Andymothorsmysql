@@ -1,5 +1,6 @@
 {% extends "baseb.html" %}
 {% block titulo_pagina %}Lista de Productos{% endblock %}
+
 {% block content %}
 
 <a class="btn btn-primary btn-sm mb-1" href="{{ url_for('productos.add') }}">Agregar Producto</a>
@@ -37,10 +38,12 @@
                 <td>{{ producto.categoria.nombre }}</td>
                 <td>${{ "{:,.0f}".format(producto['precio']).replace(",", ".") }}</td>
                 <td>
-                    <a href="{{ url_for('productos.edit', id=producto.idproducto) }}" class="btn btn-sm btn-warning mb-1">Editar</a>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('productos.edit', id=producto.idproducto) }}" class="btn btn-sm btn-custom-orange flex-fill mb-1">Editar</a>
                     <a href="javascript:void(0);"
                        onclick="confirmarEliminacion('{{ producto.idproducto }}');"
-                       class="btn btn-sm btn-danger">Eliminar</a>
+                       class="btn btn-sm btn-danger flex-fill mb-1">Eliminar</a>
+                </div>
                 </td>
             </tr>
             {% endfor %}

@@ -2,6 +2,7 @@
 {% block titulo_pagina %}Editar producto {% endblock %}
 {% block content %}
 <form action="{{ url_for('productos.edit', id=Productodata.idproducto) }}" method="post" enctype="multipart/form-data">
+    <a class="btn btn-sm btn-success mb-1" href="{{ url_for('productos.index') }}">Regresar</a>
     <div class="col-12 col-md-12 text-center mb-3">
         <h2><label class="fw-bold">Datos del Productos</label><br></h2>
     </div>
@@ -9,9 +10,21 @@
         <label for="nameUser" class="form-label">Nombre:</label>
         <input type="text" id="nombre" name="nombre" value="{{ Productodata.nombre }}" required class="form-control">
     </div>
+    <div class="form-group mb-3">
+        <label for="Stock" class="form-label">Stock:</label>
+        <input type="number" id="stock" name="stock" value="{{ Productodata.stock }}" required class="form-control">
+    </div>
     <div class="form-group">
         <label for="name">Precio:</label>
-        <input type="text" class="form-control" id="precio" name="precio" value="{{ Productodata.precio }}" required>
+        <input type="number" class="precio form-control" id="precio" name="precio" value="{{ Productodata.precio | int }}" required>
+    </div>
+    <div class="form-group">
+        <label for="name">Porcentaje Descuento:</label>
+        <input type="number" class="pordes form-control" id="pordes" min="0" max="100" name="pordes" value="{{ Productodata.pordes | int }}" required>
+    </div>
+    <div class="form-group">
+        <label for="name">Descuento:</label>
+        <input type="number" class="descuento form-control" id="descuento" name="descuento" value="{{ Productodata.descuento | int }}" readonly required>
     </div>
     <div class="form-group">
         <label for="name">Descripcion:</label>
@@ -78,7 +91,35 @@
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Actualizar Producto</button>
-    <a class="btn btn-sm btn-success mb-1" href="{{ url_for('productos.index') }}">Cancelar</a>
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary lex-fill mb-1">Actualizar Producto</button>
+        <a class="btn btn-sm btn-success lex-fill mb-1" href="{{ url_for('productos.index') }}">Cancelar</a>
+    </div>
 </form>
+<script>
+    function calcularDescuento() {
+        const precioInput = document.getElementById("precio");
+        const pordesInput = document.getElementById("pordes");
+        const descuentoInput = document.getElementById("descuento");
+ 
+        let precio = parseFloat(precioInput.value) || 0;
+        let porcentaje = parseFloat(pordesInput.value) || 0;
+
+    // Asegurar que esté entre 0 y 100
+    if (porcentaje < 0) porcentaje = 0;
+    if (porcentaje > 100) porcentaje = 100;
+
+    pordesInput.value = porcentaje; // actualiza el campo si estaba fuera de rango
+
+
+    let descuento = (precio * porcentaje) / 100;
+    descuentoInput.value = descuento.toFixed(0);
+    }
+
+    // Escucha cambios en el campo porcentaje de descuento
+    document.getElementById("pordes").addEventListener("input", calcularDescuento);
+
+    // También puedes hacerlo opcional si cambia el precio
+    document.getElementById("precio").addEventListener("input", calcularDescuento);
+</script>
 {% endblock %}
